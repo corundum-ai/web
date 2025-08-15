@@ -41,7 +41,7 @@
       width: min(1200px, 92vw);
       margin: 0 auto;
     }
-     /* Background artistry: crystalline grid + subtle noise + vignette */
+
     .bg{
       position: fixed;
       inset: 0;
@@ -365,7 +365,7 @@
       margin-top: 8px;
       flex: 0 0 auto;
     }
-     /* Sections */
+
     section{ padding: clamp(42px, 8vw, 96px) 0 }
     .section-head{
       display:flex; align-items:flex-end; justify-content:space-between; gap:16px; margin-bottom: 20px;
@@ -390,7 +390,7 @@
       .col-6, .col-4, .col-8{ grid-column: span 12 }
       nav ul{ display: none }
     }
-     /* Founder badge */
+
     .founder-card{
       display:flex; gap:14px; align-items:center;
     }
@@ -431,7 +431,7 @@
       box-shadow: 0 0 18px rgba(255,255,255,0.6);
     }
     .li-icon svg{ width: 18px; height: 18px; }
-     /* Footer */
+
     footer{
       padding: 24px 0 40px;
       border-top: 1px solid var(--border-soft);
@@ -441,7 +441,7 @@
       display:flex; align-items:center; justify-content:space-between; gap: 12px; flex-wrap: wrap;
       color: var(--dim); font-size: 13px;
     }
-     /* Utilities */
+
     .sr-only{ position: absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip: rect(0,0,0,0); border:0 }
     .tilt:hover{ transform: translateY(-1px) }
     .divider{
@@ -468,7 +468,7 @@
       border-radius: 10px; padding: 6px 10px; background: rgba(255,255,255,0.03); color: var(--fg); cursor:pointer;
     }
     .copy-btn:hover{ background: rgba(255,255,255,0.08); box-shadow: var(--shadow-glow) }
-     /* Glowing separators */
+
     .glowline{
       height: 2px;
       background: radial-gradient(closest-side, rgba(255,255,255,0.8), transparent), linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
@@ -714,7 +714,7 @@
   </footer>
 
   <script>
-    // Utility: move radial glow with cursor for panels
+
     document.querySelectorAll('.panel').forEach(panel=>{
       panel.addEventListener('pointermove', e=>{
         const rect = panel.getBoundingClientRect();
@@ -723,7 +723,7 @@
       });
     });
 
-    // Smooth chips insertion
+
     const promptEl = document.getElementById('prompt');
     document.querySelectorAll('.chip').forEach(chip=>{
       chip.addEventListener('click', ()=>{
@@ -732,7 +732,7 @@
       });
     });
 
-    // Typewriter renderer
+
     const outputEl = document.getElementById('output');
     const statusEl = document.getElementById('consoleStatus');
     const copyBtn = document.getElementById('copyOutput');
@@ -779,7 +779,7 @@
 
     function toList(items){ return '<ul style="margin:8px 0 0 18px;">' + items.map(i=>`<li>${sanitize(i)}</li>`).join('') + '</ul>'; }
 
-    // Pre-baked logic based on prompt
+
     function generateFromPrompt(prompt){
       const p = prompt.trim().toLowerCase();
       // Default structure
@@ -859,7 +859,7 @@
     // Footer year
     document.getElementById('year').textContent = new Date().getFullYear();
 
-    // Prefill prompt example
+
     promptEl.placeholder = 'e.g., how to make aspirin in the school lab';
   </script>
 </body>
