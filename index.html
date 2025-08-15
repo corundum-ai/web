@@ -1,0 +1,866 @@
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CRN.ai: catalysing R&D with AI</title>
+  <meta name="description" content="CRN.ai (corundum.ai) is a startup advacing R&D with AI. driven by a mission to streamline research processes and democratise chemical knowledge, the company combines technical expertise in programming and machine learning"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800;900&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg: #060606;
+      --panel: rgba(255,255,255,0.035);
+      --panel-strong: rgba(255,255,255,0.06);
+      --border: rgba(255,255,255,0.20);
+      --border-soft: rgba(255,255,255,0.10);
+      --fg: #f2f2f2;
+      --muted: #c7c7c7;
+      --dim: #9c9c9c;
+      --accent: #ffffff;
+      --accent-soft: #e9e9e9;
+      --good: #b5ffb5;
+      --warn: #ffe8a6;
+      --danger: #ffc6c6;
+      --radius: 18px;
+      --shadow-glow: 0 0 24px rgba(255,255,255,0.18), inset 0 0 24px rgba(255,255,255,0.05);
+    }
+    * { box-sizing: border-box }
+    html, body { height:100% }
+    html { scroll-behavior:smooth }
+    body{
+      margin:0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol", sans-serif;
+      color: var(--fg);
+      background: var(--bg);
+      letter-spacing: 0.01em;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x:hidden;
+    }
+    .container{
+      width: min(1200px, 92vw);
+      margin: 0 auto;
+    }
+     /* Background artistry: crystalline grid + subtle noise + vignette */
+    .bg{
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background:
+        radial-gradient(1200px 600px at 30% -10%, rgba(255,255,255,0.06), transparent 55%),
+        radial-gradient(1200px 600px at 70% 110%, rgba(255,255,255,0.05), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,0.03), transparent 12%, transparent 88%, rgba(255,255,255,0.03)),
+        #000;
+    }
+    .grid-overlay{
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background-image:
+        linear-gradient(transparent 0 49px, rgba(255,255,255,0.06) 50px, transparent 51px),
+        linear-gradient(90deg, transparent 0 49px, rgba(255,255,255,0.06) 50px, transparent 51px);
+      background-size: 50px 50px;
+      mask-image: radial-gradient(70% 60% at 50% 10%, rgba(0,0,0,0.85), rgba(0,0,0,0.25), transparent 75%);
+      opacity: 0.25;
+      animation: drift 24s linear infinite;
+    }
+    @keyframes drift {
+      0% { transform: translateY(0) }
+      100% { transform: translateY(50px) }
+    }
+    .noise{
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .06;
+      z-index: -1;
+      background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)" opacity="0.35"/></svg>');
+      mix-blend-mode: screen;
+    }
+     header{
+      position: sticky;
+      top: 0;
+      backdrop-filter: blur(10px) saturate(140%);
+      -webkit-backdrop-filter: blur(10px) saturate(140%);
+      background: linear-gradient(180deg, rgba(10,10,10,0.75), rgba(10,10,10,0.35));
+      border-bottom: 1px solid var(--border-soft);
+      z-index: 10;
+    }
+    .nav{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding: clamp(14px, 2vw, 18px) 0;
+      gap: 16px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap: 14px;
+      text-decoration:none;
+      color:var(--fg);
+      font-weight: 800;
+      letter-spacing: 0.02em;
+    }
+    .crystal{
+      width: 36px; height: 36px;
+      border-radius: 12px;
+      background:
+        conic-gradient(from 180deg at 50% 50%, rgba(255,255,255,0.85), rgba(255,255,255,0.15), rgba(255,255,255,0.85));
+      box-shadow: 0 0 20px rgba(255,255,255,0.25), inset 0 0 12px rgba(255,255,255,0.5);
+      position: relative;
+      isolation: isolate;
+    }
+    .crystal::after{
+      content: "";
+      position: absolute;
+      inset: 2px;
+      border-radius: 10px;
+      background: linear-gradient(145deg, rgba(255,255,255,0.8), rgba(255,255,255,0.05));
+      mix-blend-mode: screen;
+      opacity: .35;
+    }
+    .brand-title{
+      font-family: "Space Grotesk", Inter, sans-serif;
+      font-size: clamp(18px, 2.2vw, 22px);
+      display:flex;
+      align-items:baseline;
+      gap: 10px;
+      text-shadow: 0 0 18px rgba(255,255,255,0.35);
+    }
+    .aka{
+      font-weight: 600;
+      font-size: 12px;
+      color: var(--dim);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      border: 1px solid var(--border-soft);
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: var(--panel);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.05);
+    }
+    nav ul{
+      display:flex;
+      gap: clamp(8px, 2vw, 24px);
+      list-style: none;
+      margin: 0; padding: 0;
+      align-items:center;
+    }
+    nav a{
+      color: var(--fg);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: clamp(13px, 1.5vw, 14.5px);
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      transition: all .2s ease;
+    }
+    nav a:hover, nav a:focus-visible{
+      border-color: var(--border);
+      background: var(--panel);
+      outline: none;
+      text-shadow: 0 0 10px rgba(255,255,255,0.35);
+      box-shadow: var(--shadow-glow);
+    }
+    .cta{
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.03));
+      box-shadow: 0 0 24px rgba(255,255,255,0.12), inset 0 0 12px rgba(255,255,255,0.08);
+      font-weight: 600;
+    }
+     /* Hero */
+    .hero{ padding: clamp(40px, 10vw, 120px) 0 40px; position: relative; }
+    .tag{
+      display:inline-flex; align-items:center; gap:8px;
+      color:var(--accent);
+      font-weight:700; letter-spacing:.12em;
+      text-transform: uppercase; font-size:12px;
+      border:1px solid var(--border);
+      border-radius: 999px;
+      padding: 8px 12px;
+      background: var(--panel);
+      box-shadow: var(--shadow-glow);
+    }
+    .tag .dot{
+      width:6px; height:6px; border-radius:50%;
+      background: var(--accent);
+      box-shadow: 0 0 12px rgba(255,255,255,0.8), 0 0 24px rgba(255,255,255,0.6);
+    }
+    h1{
+      font-family: "Space Grotesk", Inter, sans-serif;
+      font-size: clamp(34px, 6vw, 66px);
+      line-height: 1.06;
+      margin: 18px 0 12px;
+      letter-spacing: -0.02em;
+      text-shadow:
+        0 0 18px rgba(255,255,255,0.45),
+        0 0 2px rgba(255,255,255,0.9);
+    }
+    .sub{
+      font-size: clamp(16px, 2.2vw, 20px);
+      color: var(--muted);
+      max-width: 60ch;
+    }
+     .hero-grid{
+      margin-top: clamp(26px, 4vw, 42px);
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: clamp(16px, 3.5vw, 28px);
+    }
+    .panel{
+      border:1px solid var(--border);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+      padding: clamp(16px, 3vw, 24px);
+      box-shadow: var(--shadow-glow);
+      position: relative;
+      overflow: hidden;
+    }
+    .panel::before{
+      content:"";
+      position:absolute; inset:-1px;
+      border-radius: inherit;
+      background: radial-gradient(600px 180px at var(--x, 50%) var(--y, 0%), rgba(255,255,255,0.15), transparent 70%);
+      pointer-events: none;
+      transition: 100ms linear;
+    }
+     /* Product demo card */
+    .demo-header{
+      display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:12px;
+    }
+    .badge{
+      font-size: 12px;
+      color: var(--bg);
+      background: var(--accent-soft);
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      box-shadow: 0 0 14px rgba(255,255,255,0.45);
+    }
+    .hint{
+      color: var(--dim);
+      font-size: 12.5px;
+    }
+     .input{
+      display:flex; flex-direction:column; gap:10px; margin-top: 8px;
+    }
+    label{ font-size: 13px; color: var(--muted) }
+    textarea{
+      width:100%; min-height: 120px; resize: vertical;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      color: var(--fg); font-size: 15px; line-height: 1.5;
+      padding: 14px 14px 38px 14px;
+      border-radius: 14px;
+      outline: none;
+      transition: border-color .2s ease, box-shadow .2s ease;
+      box-shadow: inset 0 0 18px rgba(255,255,255,0.06);
+    }
+    textarea:focus{ border-color: var(--accent); box-shadow: 0 0 0 4px rgba(255,255,255,0.08), inset 0 0 22px rgba(255,255,255,0.10) }
+     .actions{
+      display:flex; justify-content: space-between; align-items: center; margin-top: 8px; gap: 12px;
+      flex-wrap: wrap;
+    }
+    .chips{ display:flex; gap:8px; flex-wrap: wrap }
+    .chip{
+      border:1px solid var(--border);
+      color: var(--fg);
+      background: rgba(255,255,255,0.02);
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: .2s ease;
+    }
+    .chip:hover{ background: rgba(255,255,255,0.06); box-shadow: var(--shadow-glow) }
+     .btn{
+      display:inline-flex; align-items:center; gap:10px;
+      color: var(--bg); background: var(--accent);
+      border: 1px solid var(--accent);
+      font-weight: 800; letter-spacing: .02em;
+      padding: 10px 14px; border-radius: 12px;
+      box-shadow: 0 10px 24px rgba(255,255,255,0.22), 0 0 14px rgba(255,255,255,0.45);
+      cursor: pointer; transition: transform .05s ease, box-shadow .2s ease, filter .2s ease;
+    }
+    .btn:hover{ filter: brightness(1.05) }
+    .btn:active{ transform: translateY(1px) scale(0.995) }
+     .console{
+      margin-top: 16px;
+      border:1px solid var(--border);
+      background: rgba(255,255,255,0.02);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: inset 0 0 22px rgba(255,255,255,0.08), 0 0 30px rgba(255,255,255,0.10);
+    }
+    .console-top{
+      display:flex; align-items:center; justify-content:space-between;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border-soft);
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+    }
+    .dots{ display:flex; gap:8px; align-items:center }
+    .dotx{ width:10px; height:10px; border-radius:50%; background: rgba(255,255,255,0.5); box-shadow: 0 0 8px rgba(255,255,255,0.5) }
+    .console-body{ padding: 14px; max-height: 420px; overflow: auto; font-size: 14.5px }
+    .section-title{
+      font-family: "Space Grotesk", Inter, sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      font-size: 12px;
+      color: var(--bg);
+      background: var(--accent);
+      display: inline-flex;
+      align-items:center;
+      gap:10px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      box-shadow: 0 0 16px rgba(255,255,255,0.55);
+    }
+    .block{
+      border:1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      margin-top: 12px;
+      background: rgba(255,255,255,0.03);
+      box-shadow: inset 0 0 14px rgba(255,255,255,0.06);
+    }
+    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace }
+    .muted{ color: var(--muted) }
+    .small{ font-size: 12px }
+     /* Side panel info */
+    .stat{
+      display:grid; grid-template-columns: auto 1fr; gap: 6px 12px; align-items: baseline;
+      padding: 12px; border-radius: 12px; border: 1px solid var(--border); background: rgba(255,255,255,0.03);
+      box-shadow: inset 0 0 12px rgba(255,255,255,0.06);
+    }
+    .spark{
+      width: 12px; height:12px; border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 18px rgba(255,255,255,0.9), 0 0 30px rgba(255,255,255,0.5);
+      margin-top: 4px;
+    }
+    .lead{
+      font-size: clamp(16px, 2vw, 18px);
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .list{
+      display:grid; gap:10px; margin-top: 10px;
+    }
+    .list li{
+      list-style: none;
+      padding-left: 0;
+      display:flex; gap: 10px; align-items:flex-start;
+    }
+    .bullet{
+      width: 8px; height: 8px; border-radius: 50%;
+      background: rgba(255,255,255,0.85);
+      box-shadow: 0 0 12px rgba(255,255,255,0.65);
+      margin-top: 8px;
+      flex: 0 0 auto;
+    }
+     /* Sections */
+    section{ padding: clamp(42px, 8vw, 96px) 0 }
+    .section-head{
+      display:flex; align-items:flex-end; justify-content:space-between; gap:16px; margin-bottom: 20px;
+    }
+    h2{
+      font-family: "Space Grotesk", Inter, sans-serif;
+      font-size: clamp(26px, 4.2vw, 40px);
+      line-height: 1.1;
+      margin: 0 0 6px;
+      text-shadow: 0 0 14px rgba(255,255,255,0.35);
+    }
+    p{ margin: 8px 0 0; color: var(--muted); font-size: clamp(15px, 2vw, 17px); }
+     .cards{
+      display:grid; grid-template-columns: repeat(12, 1fr); gap: 18px;
+    }
+    .col-6{ grid-column: span 6 }
+    .col-4{ grid-column: span 4 }
+    .col-8{ grid-column: span 8 }
+    .col-12{ grid-column: span 12 }
+     @media (max-width: 900px){
+      .hero-grid{ grid-template-columns: 1fr }
+      .col-6, .col-4, .col-8{ grid-column: span 12 }
+      nav ul{ display: none }
+    }
+     /* Founder badge */
+    .founder-card{
+      display:flex; gap:14px; align-items:center;
+    }
+    .avatar{
+      width: 64px; height:64px; border-radius: 16px;
+      border: 1px solid var(--border);
+      background:
+        radial-gradient(65% 65% at 50% 30%, rgba(255,255,255,0.9), rgba(255,255,255,0.2)),
+        linear-gradient(180deg, rgba(255,255,255,0.15), rgba(255,255,255,0.02));
+      display:flex; align-items:center; justify-content:center;
+      box-shadow: var(--shadow-glow);
+      font-family: "Space Grotesk", Inter, sans-serif;
+      color: var(--bg); font-weight: 800; font-size: 22px;
+    }
+    .kicker{
+      font-size: 12px; letter-spacing:.08em; text-transform: uppercase; color: var(--dim);
+    }
+    .link{
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px dashed rgba(255,255,255,0.4);
+      transition: color .2s ease, text-shadow .2s ease, border-color .2s ease;
+    }
+    .link:hover{ color: #fff; text-shadow: 0 0 12px rgba(255,255,255,0.8); border-color: rgba(255,255,255,0.7) }
+     /* Contact */
+    .contact-grid{ display:grid; grid-template-columns: repeat(2, 1fr); gap: 16px }
+    @media (max-width: 700px){ .contact-grid{ grid-template-columns: 1fr } }
+    .contact-card{
+      display:flex; align-items:center; gap: 14px;
+      padding: 16px; border-radius: 14px; border: 1px solid var(--border);
+      background: rgba(255,255,255,0.03);
+      box-shadow: var(--shadow-glow);
+      text-decoration: none; color: var(--fg);
+    }
+    .contact-card:hover{ background: rgba(255,255,255,0.06) }
+     .li-icon{
+      width: 28px; height: 28px; border-radius: 8px; background: #fff; display:grid; place-items:center; flex: 0 0 28px;
+      box-shadow: 0 0 18px rgba(255,255,255,0.6);
+    }
+    .li-icon svg{ width: 18px; height: 18px; }
+     /* Footer */
+    footer{
+      padding: 24px 0 40px;
+      border-top: 1px solid var(--border-soft);
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));
+    }
+    .foot{
+      display:flex; align-items:center; justify-content:space-between; gap: 12px; flex-wrap: wrap;
+      color: var(--dim); font-size: 13px;
+    }
+     /* Utilities */
+    .sr-only{ position: absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip: rect(0,0,0,0); border:0 }
+    .tilt:hover{ transform: translateY(-1px) }
+    .divider{
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      margin: 12px 0 10px;
+      border-radius: 1px;
+    }
+    .pulse{
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse{
+      0%, 100% { opacity: 1; text-shadow: 0 0 12px rgba(255,255,255,0.5) }
+      50% { opacity: 0.7; text-shadow: 0 0 22px rgba(255,255,255,0.9) }
+    }
+    .note{
+      font-size: 12px; color: var(--dim);
+      border-left: 2px solid var(--border);
+      padding-left: 10px;
+      margin-top: 12px;
+    }
+    .copy-btn{
+      display:inline-flex; align-items:center; gap:8px; border:1px solid var(--border);
+      border-radius: 10px; padding: 6px 10px; background: rgba(255,255,255,0.03); color: var(--fg); cursor:pointer;
+    }
+    .copy-btn:hover{ background: rgba(255,255,255,0.08); box-shadow: var(--shadow-glow) }
+     /* Glowing separators */
+    .glowline{
+      height: 2px;
+      background: radial-gradient(closest-side, rgba(255,255,255,0.8), transparent), linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+      filter: blur(.3px);
+      margin: 24px 0 0;
+      opacity:.7;
+    }
+  </style>
+</head>
+<body>
+  <div class="bg"></div>
+  <div class="grid-overlay"></div>
+  <div class="noise"></div>
+
+  <header aria-label="Site header">
+    <div class="container nav">
+      <a href="#" class="brand" aria-label="CRN.ai home">
+        <div class="crystal" aria-hidden="true"></div>
+        <div class="brand-title">
+          <span>CRN.ai</span>
+          <span class="aka">corundum.ai</span>
+        </div>
+      </a>
+      <nav aria-label="Primary navigation">
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#product"> First Product</a></li>
+          <li><a href="#founder">Founder</a></li>
+          <li><a href="#contact" class="cta">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero container" id="top">
+      <span class="tag"><span class="dot"></span> catalysing R&amp;D with AI</span>
+      <h1 class="pulse">illuminate your innovation</h1>
+      <p class="sub">At CRN.ai (corundum.ai), we are at the forefront of harnessing artificial intelligence to revolutionise scientific discovery and innovation. Our vision is to unlock the full potential of AI-driven solutions, pushing the boundaries of what’s possible in science, technology, and beyond.</p>
+
+      <div class="hero-grid">
+        <!-- Side info panel -->
+        <aside class="panel tilt" aria-labelledby="mission">
+          <div class="stat">
+            <div class="spark" aria-hidden="true"></div>
+            <div>
+              <div class="kicker">Our mission</div>
+              <div id="mission" class="lead">Streamline research and democratise chemical knowledge with accessible, precise, and safe AI-powered tools.</div>
+            </div>
+          </div>
+          <div class="divider"></div>
+          <ul class="list" aria-label="What CRN.ai brings">
+            <li><span class="bullet" aria-hidden="true"></span><div><strong>Access</strong><br/><span class="muted">unprecedented access to chemical knowledge – breaking down barriers so anyone, anywhere, can harness the power of advanced chemistry.</span></div></li>
+            <li><span class="bullet" aria-hidden="true"></span><div><strong>Acceleration</strong><br/><span class="muted">intelligent acceleration of discovery – transforming the pace at which science moves from idea to breakthrough.</span></div></li>
+            <li><span class="bullet" aria-hidden="true"></span><div><strong>Sustainability</strong><br/><span class="muted">a new era of sustainable innovation – shaping chemical progress that benefits both humanity and the planet.</span></div></li>
+          </ul>
+          <div class="glowline"></div>
+          <div class="founder-card" style="margin-top:16px;">
+            <div class="avatar" aria-hidden="true"><3</div>
+            <div>
+              <div class="kicker">Founder</div>
+              <div><strong>Eesha Neelam</strong>  17-year-old girl on a mission to accelerate scientific discovery.</div>
+              <div class="small muted">currently building synthAIser as the first step toward luminous R&amp;D workflows.</div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2>About CRN.ai (corundum.ai)</h2>
+            <p>crn.ai is democratising advanced scientific tools, bringing capabilities once reserved for elite laboratories to anyone, anywhere. by integrating with next-generation hardware such as robotics, sensors, and automated systems, it creates a seamless link between intelligent software and physical experimentation. this fusion enables research to be monitored, optimised, and guided remotely, unlocking a new era of accessible, connected, and data-driven science.</p>
+          </div>
+        </div>
+
+        <div class="cards">
+          <div class="panel col-6">
+            <div class="section-title">Focus</div>
+            <p>we build tools that translate complex objectives into smooth pathways: reducing friction from idea to experiment.</p>
+          </div>
+          <div class="panel col-6">
+            <div class="section-title">Impact</div>
+            <p>from classrooms to industries, CRN.ai strives to empower users, accelerate scientific discovery and build sustainable innovation on a global scale.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="founder">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2>The founder</h2>
+            <p>Founded by <strong>Eesha Neelam</strong> leveraging ai to transform chemical engineering</p>
+          </div>
+        </div>
+        <div class="cards">
+          <div class="panel col-8">
+            <div class="section-title">Vision</div>
+            <p>to transform the way chemistry is learned, researched, and applied worldwide by making advanced scientific knowledge accessible, efficient, and safe through ai-driven innovation.</p>
+            <div class="divider"></div>
+            <p>Follow her journey on LinkedIn:
+              <a class="link" href="https://www.linkedin.com/in/eesha-neelam" rel="noopener" target="_blank">linkedin.com/in/eesha-neelam</a>
+            </p>
+          </div>
+          <div class="panel col-4">
+            <div class="section-title">SynthAIser in a nutshell </div>
+            <ul class="list" style="margin-top:8px;">
+              <li><span class="bullet"></span><div><strong>Input:</strong> Your question.</div></li>
+              <li><span class="bullet"></span><div><strong>Output:</strong> A precise method with CLEAPS hazard sheets.</div></li>
+              <li><span class="bullet"></span><div><strong>Designed for:</strong> Education, Research, and Industrial developments.</div></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2>Inside SynthAIser</h2>
+            <p>A prompt-first assistant that scaffolds scientific work: materials, steps, safety considerations, and documentation in one place.</p>
+          </div>
+        </div>
+        <div class="cards">
+          <div class="panel col-4">
+            <div class="section-title">Method</div>
+            <p>Generate structured step-by-step instructions, materials lists, and expected observations tailored to your prompt.</p>
+          </div>
+          <div class="panel col-4">
+            <div class="section-title">Hazard sheets</div>
+            <p>Receive concise hazard notes with control measures to keep safety at the forefront.</p>
+          </div>
+          <div class="panel col-4">
+            <div class="section-title">Documentation</div>
+            <p>Outputs are formatted to be easy to copy, adapt, and share within your preferred workflow.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Product demo section -->
+    <section id="product">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2>Try SynthAIser</h2>
+            <p>Turn an example prompt into method with hazard sheets.</p>
+          </div>
+        </div>
+        <div class="panel tilt">
+          <div class="demo-header">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <span class="badge">synthAIser</span>
+              <span class="hint">turn an idea into method + hazard sheets</span>
+            </div>
+            <button class="copy-btn" id="copyOutput" aria-label="Copy output" title="Copy output">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <rect x="9" y="9" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/>
+                <rect x="3" y="3" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/>
+              </svg>
+              Copy
+            </button>
+          </div>
+          <div class="input">
+            <label for="prompt" class="mono">Prompt</label>
+            <textarea id="prompt" placeholder="e.g., how to make aspirin in the school lab"></textarea>
+            <div class="actions">
+              <div class="chips" aria-label="Prompt suggestions">
+                <button class="chip" data-example="how to make aspirin in the school lab">aspirin (school lab)</button>
+                <button class="chip" data-example="prepare a 0.1 M NaCl solution and outline hazards">0.1 M NaCl prep</button>
+                <button class="chip" data-example="benzoic acid recrystallisation: method and hazard sheet">recrystallisation</button>
+              </div>
+              <button class="btn" id="generate">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M5 12h14M12 5l7 7-7 7" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Generate
+              </button>
+            </div>
+          </div>
+
+          <div class="console" role="region" aria-live="polite" aria-label="Generated output">
+            <div class="console-top">
+              <div class="dots" aria-hidden="true">
+                <span class="dotx"></span><span class="dotx"></span><span class="dotx"></span>
+              </div>
+              <span class="small muted mono" id="consoleStatus">ready</span>
+            </div>
+            <div class="console-body mono" id="output">
+              <div class="muted">Demo method and hazard sheets will appear here.</div>
+            </div>
+          </div>
+          <p class="note">heavily simplified preview. not representative of product performance</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2>Contact</h2>
+            <p>Follow CRN.ai and its founder on LinkedIn.</p>
+          </div>
+        </div>
+        <div class="contact-grid">
+          <a class="contact-card" href="https://www.linkedin.com/company/crn-ai" target="_blank" rel="noopener">
+            <div class="li-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="black" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.95v5.66H9.35V9.5h3.42v1.49h.05c.48-.9 1.65-1.85 3.4-1.85 3.63 0 4.3 2.39 4.3 5.5v5.81zM5.34 8.01a2.07 2.07 0 1 1 0-4.14 2.07 2.07 0 0 1 0 4.14zM7.12 20.45H3.56V9.5h3.56v10.95z"></path></svg>
+            </div>
+            <div>
+              <div><strong>CRN.ai on LinkedIn</strong></div>
+              <div class="small muted">www.linkedin.com/company/crn-ai</div>
+            </div>
+          </a>
+          <a class="contact-card" href="https://www.linkedin.com/in/eesha-neelam" target="_blank" rel="noopener">
+            <div class="li-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="black" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.13 1.45-2.13 2.95v5.66H9.35V9.5h3.42v1.49h.05c.48-.9 1.65-1.85 3.4-1.85 3.63 0 4.3 2.39 4.3 5.5v5.81zM5.34 8.01a2.07 2.07 0 1 1 0-4.14 2.07 2.07 0 0 1 0 4.14zM7.12 20.45H3.56V9.5h3.56v10.95z"></path></svg>
+            </div>
+            <div>
+              <div><strong>Eesha Neelam</strong></div>
+              <div class="small muted">www.linkedin.com/in/eesha-neelam</div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer role="contentinfo">
+    <div class="container foot">
+      <div style="display:flex; align-items:center; gap:10px;">
+        <div class="crystal" style="width:22px;height:22px;border-radius:8px;"></div>
+        <span class="small">CRN.ai: catalysing R&amp;D with AI</span>
+      </div>
+      <span class="small">© <span id="year"></span> CRN.ai (corundum.ai)</span>
+    </div>
+  </footer>
+
+  <script>
+    // Utility: move radial glow with cursor for panels
+    document.querySelectorAll('.panel').forEach(panel=>{
+      panel.addEventListener('pointermove', e=>{
+        const rect = panel.getBoundingClientRect();
+        panel.style.setProperty('--x', (e.clientX - rect.left) + 'px');
+        panel.style.setProperty('--y', (e.clientY - rect.top) + 'px');
+      });
+    });
+
+    // Smooth chips insertion
+    const promptEl = document.getElementById('prompt');
+    document.querySelectorAll('.chip').forEach(chip=>{
+      chip.addEventListener('click', ()=>{
+        promptEl.value = chip.getAttribute('data-example');
+        promptEl.focus();
+      });
+    });
+
+    // Typewriter renderer
+    const outputEl = document.getElementById('output');
+    const statusEl = document.getElementById('consoleStatus');
+    const copyBtn = document.getElementById('copyOutput');
+
+    function setStatus(text, pulse=false){
+      statusEl.textContent = text;
+      statusEl.classList.toggle('pulse', pulse);
+    }
+
+    function sanitize(str){
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    function renderBlocks(blocks){
+      outputEl.innerHTML = '';
+      blocks.forEach(b=>{
+        const wrap = document.createElement('div');
+        const title = document.createElement('div');
+        title.className = 'section-title';
+        title.textContent = b.title;
+        const blk = document.createElement('div');
+        blk.className = 'block mono';
+        blk.innerHTML = b.content;
+        wrap.appendChild(title);
+        wrap.appendChild(blk);
+        outputEl.appendChild(wrap);
+      });
+    }
+
+    function typeIn(el, text, speed=12){
+      return new Promise(resolve=>{
+        let i=0;
+        const tick=()=>{
+          el.innerHTML = sanitize(text.slice(0,i)).replace(/\n/g,'<br>');
+          i++;
+          if(i<=text.length) requestAnimationFrame(tick);
+          else resolve();
+        };
+        tick();
+      });
+    }
+
+    function toList(items){ return '<ul style="margin:8px 0 0 18px;">' + items.map(i=>`<li>${sanitize(i)}</li>`).join('') + '</ul>'; }
+
+    // Pre-baked logic based on prompt
+    function generateFromPrompt(prompt){
+      const p = prompt.trim().toLowerCase();
+      // Default structure
+      let methodTitle = 'Method';
+      let methodBody = '';
+      let hazardTitle = 'Hazard sheet';
+      let hazardBody = '';
+
+      if(p.includes('aspirin')){
+        methodTitle = 'Method: Synthesis of Aspirin (school lab demo)';
+        methodBody = `Overview Synthesize acetylsalicylic acid (aspirin) from salicylic acid and acetic anhydride via acid catalysis.  Materials - Salicylic acid (~2.0 g) - Acetic anhydride (~4 mL) - Concentrated H2SO4 (few drops, catalyst) - Distilled water, ice - Ethanol (small amount for recrystallisation, if permitted) - Beakers (100 mL), conical flask, ice bath, glass rod, filter paper, funnel  Procedure 1) Add salicylic acid to a dry conical flask. 2) Carefully add acetic anhydride, then 3–5 drops of conc. H2SO4. Swirl gently. 3) Warm in a 50–70°C water bath for ~10 minutes. Do not boil. 4) Pour the mixture into ~50 mL of cold water with stirring to quench excess anhydride and precipitate aspirin. 5) Cool in an ice bath for ~5–10 minutes to maximise crystallisation. 6) Vacuum or gravity filter the crystals. Rinse with a small volume of cold water. 7) Optional: Recrystallise from minimal hot ethanol then cool to improve purity. 8) Dry crystals between filter papers or in a drying oven (as permitted).  Observations - Mixture becomes clearer on warming; white crystals form upon quench and cooling.  Notes - Yield and melting point can be recorded for evaluation.`;
+        hazardBody = `Key substances - Acetic anhydride: Corrosive; lachrymator. - Sulfuric acid (conc.): Strongly corrosive. - Salicylic/acetylsalicylic acid: Irritant (dust).  Primary hazards - Skin/eye burns (acids and anhydrides) - Respiratory irritation (vapours/dust) - Heat generation during quench  Controls - Conduct in well-ventilated area or fume cupboard. - Wear splash goggles, lab coat, acid-resistant gloves. - Use ice bath when quenching to control exotherm.  First aid - Skin/eye contact: Rinse with water for ≥15 minutes; seek medical attention. - Inhalation: Move to fresh air; seek assistance if symptoms persist.  Waste - Neutralise acidic residues (as per local protocol) and dispose via approved chemical waste streams.`;
+      } else if (p.includes('0.1') && p.includes('nacl')) {
+        methodTitle = 'Method: Preparation of 0.1 M NaCl Solution';
+        methodBody = `Overview Prepare 1 L of 0.1 M sodium chloride solution.  Materials - Sodium chloride (NaCl), analytical grade - Distilled/deionised water - 1 L volumetric flask, balance, funnel, weighing boat  Procedure 1) Calculate mass: m = M × V × Mr = 0.1 mol/L × 1 L × 58.44 g/mol = 5.844 g. 2) Weigh ~5.84 g NaCl. 3) Add ~600 mL water to the volumetric flask. Add NaCl via funnel. 4) Swirl until dissolved. Top up to the 1 L mark. Invert to mix.  Label - "NaCl 0.1 M", date, preparer, and any storage info.`;
+        hazardBody = `Hazards - NaCl: Low hazard at 0.1 M; dust may irritate eyes/airways.  Controls - Avoid inhaling dust; wear goggles when weighing.  Waste - Aqueous salt solution: Typically low hazard; follow local disposal guidelines.`;
+      } else if (p.includes('recryst') || (p.includes('benzoic') && p.includes('recryst'))) {
+        methodTitle = 'Method: Recrystallisation of Benzoic Acid';
+        methodBody = `Overview Purify benzoic acid via recrystallisation.  Materials - Crude benzoic acid - Hot water (solvent) - Ice bath, beakers, funnel, filter paper  Procedure 1) Heat water to near boiling. 2) Add crude solid to minimal hot water until just dissolved. 3) If needed, hot-filter to remove insoluble impurities. 4) Allow to cool slowly, then in ice bath to crystallise. 5) Collect crystals by filtration; rinse with small cold water. 6) Dry and record mass/melting point.`;
+        hazardBody = `Hazards - Benzoic acid: Irritant (dust); hot solutions can scald.  Controls - Heat with care; use tongs/heatproof gloves; wear goggles and lab coat.  Waste - Benzoic acid residues and filtrate to appropriate waste as per local guidance.`;
+      } else {
+        methodTitle = 'An Example Blueprint';
+        methodBody = `Overview Provides a concise description of your objective and context.  Materials - Lists reagents, solvents, apparatus, and protective equipment.  Procedure 1) Outlines step-by-step actions with timings and temperatures. 2) Includes observations and decision points. 3) Concludes with work-up, purification, and documentation notes.  Will add yields, characterisation, and references if relevant.`;
+        hazardBody = `Hazards - Identify chemical, physical, and procedural hazards.  Controls - PPE, ventilation, temperature/pressure controls, and checklists.  First aid - High-level actions for exposure scenarios.  Waste - Labelling, segregation, and disposal routes per local regulations.`;
+      }
+
+      return [
+        { title: methodTitle, content: methodBody.replace(/\n/g,'<br>') },
+        { title: hazardTitle, content: hazardBody.replace(/\n/g,'<br>') }
+      ];
+    }
+
+    function simulateGeneration(blocks){
+      setStatus('generating…', true);
+      outputEl.innerHTML = '';
+      const [m, h] = blocks;
+      const wrap1 = document.createElement('div');
+      const t1 = document.createElement('div'); t1.className = 'section-title'; t1.textContent = m.title;
+      const b1 = document.createElement('div'); b1.className = 'block mono';
+      wrap1.appendChild(t1); wrap1.appendChild(b1);
+
+      const wrap2 = document.createElement('div');
+      const t2 = document.createElement('div'); t2.className = 'section-title'; t2.textContent = h.title;
+      const b2 = document.createElement('div'); b2.className = 'block mono';
+      wrap2.appendChild(t2); wrap2.appendChild(b2);
+
+      outputEl.appendChild(wrap1);
+      outputEl.appendChild(wrap2);
+
+      // Type in both blocks sequentially
+      typeIn(b1, m.content.replace(/<br>/g, '\n')).then(()=>{
+        return typeIn(b2, h.content.replace(/<br>/g, '\n'));
+      }).then(()=>{
+        setStatus('ready');
+      });
+    }
+
+    document.getElementById('generate').addEventListener('click', ()=>{
+      const p = promptEl.value.trim() || 'how to make aspirin in the school lab';
+      const blocks = generateFromPrompt(p);
+      simulateGeneration(blocks);
+    });
+
+    copyBtn.addEventListener('click', ()=>{
+      // Collect plain text from the output
+      const tmp = document.createElement('div');
+      tmp.innerHTML = outputEl.innerHTML;
+      const text = tmp.textContent || tmp.innerText || '';
+      navigator.clipboard.writeText(text).then(()=>{
+        copyBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Copied';
+        setTimeout(()=>{
+          copyBtn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/><rect x="3" y="3" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.5"/></svg>Copy';
+        }, 1600);
+      });
+    });
+
+    // Footer year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Prefill prompt example
+    promptEl.placeholder = 'e.g., how to make aspirin in the school lab';
+  </script>
+</body>
+</html>
